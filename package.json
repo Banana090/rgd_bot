@@ -1,0 +1,18 @@
+{
+  "name": "rgdbot",
+  "version": "1.0.0",
+  "description": "bot for Russian Gamedev Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eugene",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "ffmpeg-binaries": "^4.0.0",
+    "node-opus": "^0.3.1",
+    "osu.js": "^2.0.3",
+    "ytdl-core": "^0.27.1"
+  }
+}
