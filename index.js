@@ -109,3 +109,4 @@ function reconnect() {
 }
 
 bot.login(tokenfile.token);
+/* NTA4Mjc2Njk2NTQyMDg1MTIx.Dr-Q_A.1yzrfCIqSHqu067AmuFH8eLRnzc */
