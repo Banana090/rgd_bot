@@ -1,13 +1,16 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args) =>
+{
     message.delete();
 
     let builder = new Discord.RichEmbed();
     let icon = "https://cdn3.iconfinder.com/data/icons/unigrid-flat-food/90/006_092_jam_confiture_strawbery_marmalade_kitchen_sweet_food_provisions_preserves-512.png";
 
-    if (args[0]) {
-        switch (args[0]) {
+    if (args[0])
+    {
+        switch (args[0])
+        {
             case "1":
                 builder.setAuthor("Game Jam #1", icon)
                     .setDescription("**Тема**: \"Ужасы и Безысходность\"\n**Призовой фонд**: 6500 рублей\n**Время проведения**: 10 - 24 июля 2018")
@@ -70,7 +73,8 @@ module.exports.run = async (bot, message, args) => {
 
             default: message.channel.send(`Извините, <@${message.author.id}>, джема с таким номером не найдено`);
         }
-    } else {
+    } else
+    {
         let embed = new Discord.RichEmbed()
             .setAuthor("Архив джемов Russian Gamedev", icon)
             .setDescription("Вы можете узнать результаты прошедших джемов нашего сервера, а также поиграть в игры с этих джемов!\n\nДля того, чтобы посмотреть информацию по джему воспользуйтесь командой `!джем ID`\nГде ID = Номер джема в списке")

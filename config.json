@@ -1,8 +1,6 @@
 {
-    "operator": {
-        "Terisback": "281037696225247233"
-    },
-    "emoji": {
-        "steam": "<:steam:560626183579107328>"
+    "activity": {
+        "type": 2,
+        "text": "test1122"
     }
 }

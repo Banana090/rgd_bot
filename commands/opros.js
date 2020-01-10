@@ -1,11 +1,13 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args) =>
+{
     message.delete();
     args = args.join(" ");
     let sepInd = args.indexOf(":");
 
-    if (sepInd == -1) {
+    if (sepInd == -1)
+    {
         let embed = new Discord.RichEmbed()
             .setAuthor("Как создавать опрос?", "https://wmpics.pics/upload/smallthumbs/H7SA.png")
             .setDescription("Создайте опрос по такой форме:\n```!опрос название : варианты; ответа ; через;точку с запятой```И бот автоматически создаст опрос, добавив к нему реакции для голосования ;)\n\nP.S. Расставлять пробелы не обязательно")
@@ -22,7 +24,8 @@ module.exports.run = async (bot, message, args) => {
     let descfinale = "";
 
     let asnwerCount = 0;
-    desc.forEach(function (element) {
+    desc.forEach(function (element)
+    {
         let asnwer = element.trim();
         asnwer = asnwer.charAt(0).toUpperCase() + asnwer.slice(1);
         descfinale += `${++asnwerCount}. ${asnwer}\n`
@@ -36,7 +39,8 @@ module.exports.run = async (bot, message, args) => {
     let opros = await message.channel.send(embed);
 
     if (asnwerCount > 9) { asnwerCount = 9; }
-    for (let i = 0; i < asnwerCount; i++) {
+    for (let i = 0; i < asnwerCount; i++)
+    {
         await opros.react(`${i + 1}\u20e3`);
     }
 }
