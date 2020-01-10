@@ -3,5 +3,5 @@
 node_modules
 
 /auth.json
-/!Start.bat
+/Start.bat
 /package-lock.json
