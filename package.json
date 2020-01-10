@@ -1,18 +1,22 @@
 {
-  "name": "rgdbot",
-  "version": "1.0.0",
-  "description": "bot for Russian Gamedev Server",
+  "name": "rgd_bot",
+  "version": "2.0.0",
+  "description": "Russian Gamedev Original Bot v2",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Eugene",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Banana090/rgd_bot.git"
+  },
+  "author": "Дядя Женя",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Banana090/rgd_bot/issues"
+  },
+  "homepage": "https://github.com/Banana090/rgd_bot#readme",
   "dependencies": {
-    "discord.js": "^11.4.2",
-    "ffmpeg-binaries": "^4.0.0",
-    "node-opus": "^0.3.1",
-    "osu.js": "^2.0.3",
-    "ytdl-core": "^0.27.1"
+    "discord.js": "^11.5.1"
   }
 }
