@@ -1,6 +1,7 @@
 .vs
 .vscode
 node_modules
-auth.json
-!Start.bat
-package-lock.json
+
+/auth.json
+/!Start.bat
+/package-lock.json
