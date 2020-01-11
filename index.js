@@ -37,6 +37,9 @@ bot.on("ready", async () =>
     bot.cachedChannels.bot = bot.rgdGuild.channels.get(config.channels.bot);
     bot.cachedChannels.tsar = bot.rgdGuild.channels.get(config.channels.tsar);
     bot.cachedChannels.obsh = bot.rgdGuild.channels.get(config.channels.obsh);
+    bot.cachedChannels.role = bot.rgdGuild.channels.get(config.channels.role);
+    bot.cachedRoles = {};
+    bot.cachedRoles.mute = bot.rgdGuild.roles.get(config.roles.mute);
     OnEnabled();
 });
 
