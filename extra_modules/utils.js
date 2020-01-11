@@ -1,14 +1,55 @@
 const Discord = require("discord.js");
-const config = require("./config.json");
+const coins = require("../json/coins.json");
+const fs = require("fs");
 
-function isOperator(message) {
-    console.log("Operator?");
-    for (const operKey in Object.keys(config["operator"]))
-        if (config[operKey] == message.author.id)
-            return true;
-    if (message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR))
-        return true;
-    return false;
+module.exports.IsAdmin = (guildMember) =>
+{
+    return guildMember.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR);
 }
 
-module.exports.isOperator = isOperator;
+module.exports.IsJeka = (bot, guildMember) =>
+{
+    return guildMember.id == bot.rgdGuild.ownerID;
+}
+
+module.exports.CheckForCoinsRegistered = (user) =>
+{
+    if (!coins[user.id])
+    {
+        coins[user.id] = {
+            coins: 0,
+            date: Date.now()
+        };
+    }
+}
+
+module.exports.GetCoins = (user) =>
+{
+    this.CheckForCoinsRegistered(user);
+    return coins[user.id].coins;
+}
+
+module.exports.AddCoins = (user, amount) =>
+{
+    this.CheckForCoinsRegistered(user);
+    coins[user.id].coins += amount;
+    if (coins[user.id].coins < 0) coins[user.id].coins = 0;
+}
+
+module.exports.SaveCoins = () =>
+{
+    fs.writeFile("./json/coins.json", JSON.stringify(coins), (err) =>
+    {
+        if (err)
+            console.log(err);
+    })
+}
+
+module.exports.SendMessage = async (bot, channel, text) => 
+{
+    return channel.send(text)
+        .catch(ex =>
+        {
+            bot.cachedChannels.tsar.send(`${ex.name}\n${ex.message}`);
+        });
+}

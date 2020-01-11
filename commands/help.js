@@ -1,25 +1,22 @@
 const Discord = require("discord.js");
+const help = require("../json/help.json");
+const utils = require("../extra_modules/utils.js");
 
-module.exports.run = async (bot, message, args) =>
+module.exports.only_bot_channel = true;
+
+module.exports.run = async (bot, message, cmd, args) =>
 {
-    message.delete();
-    let embed = new Discord.RichEmbed()
-        .setAuthor("Спиок основных команд", "https://wmpics.pics/upload/smallthumbs/H7SA.png")
-        .addField("Для канала #бот", "`!роль` - Добавить/Убрать себе роль\n" +
-            "`!онлайн` - Статистика по онлайну\n" +
-            "`!монеты @тэг` - Посмотреть количество монет (без тэга - своих)\n" +
-            "`!монеты дать @тэг кол-во` - Отправить кому-то монеты (без количества - одну)\n" +
-            "`!подарок` - Получить несколько монет раз в 12 часов\n" +
-            "`!флип (ставка)` - Подбросить фишку на (ставка) монет (без ставки - 0)\n" +
-            "`!коробки` - Сыграть в коробки\n" +
-            "`!магазин` - Магазин сервера за игровую валюту\n" +
-            "`!джем` - Архив с данными о прошедших джемах")
-        .addField("Для всех каналов", "`!опрос` - создать опрос")
-        .addField("Другое", "`!играть [YT-link]` - включить песню\n" +
-            "`!пропуск` - пропуск песни")
-        .setColor("#FFFFFF");
+    let embed = new Discord.RichEmbed().setColor("#FFFFFF");
+    let list = "";
 
-    message.channel.send(embed);
+    help.commands.forEach(command =>
+    {
+        list += `\`${command.name}\` - ${command.desc}\n`;
+    });
+
+    embed.addField("Список Команд", list);
+
+    utils.SendMessage(bot, message.channel, embed);
 }
 
 module.exports.help = {

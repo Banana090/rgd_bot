@@ -1,7 +1,8 @@
 ﻿const Discord = require("discord.js");
 const fs = require("fs");
-const auth = require("./auth.json");
-const config = require("./config.json");
+const auth = require("./json/auth.json");
+const config = require("./json/config.json");
+const command_handler = require("./extra_modules/command_handler.js");
 
 const bot = new Discord.Client();
 
@@ -30,7 +31,12 @@ fs.readdir("./commands/", (err, files) =>
 //#region System Events
 bot.on("ready", async () =>
 {
-    console.log(`${bot.user.username} ready!`);
+    console.log(`${bot.user.username} connected`);
+    bot.rgdGuild = bot.guilds.get(config.guild);
+    bot.cachedChannels = {};
+    bot.cachedChannels.bot = bot.rgdGuild.channels.get(config.channels.bot);
+    bot.cachedChannels.tsar = bot.rgdGuild.channels.get(config.channels.tsar);
+    bot.cachedChannels.obsh = bot.rgdGuild.channels.get(config.channels.obsh);
     OnEnabled();
 });
 
@@ -54,44 +60,10 @@ async function OnEnabled()
 
 async function OnUserLeft(actionUser)
 {
-    let chan = actionUser.guild.channels.find(x => x.id === "504706488368103435");
-    chan.send(`**<@${actionUser.user.id}> (${actionUser.user.username}) вышел с сервера**`);
+    bot.cachedChannels.bot.send(`**${actionUser.user.username}** вышел с сервера`);
 }
 
 async function OnMessage(message)
 {
-    if (!message.content.startsWith("!")) return;
-    if (message.author.bot) return;
-    if (!message.guild) return;
-
-    let messageArray = message.content.split(" ");
-    let cmd = messageArray[0].slice(1);
-    let args = messageArray.slice(1);
-
-    let commandfile = bot.commands.get(cmd);
-
-    if (commandfile)
-    {
-        if (cmd == "играть" || cmd == "пропуск")
-        {
-            if (message.channel.name != "текстовый_voice")
-            {
-                let rep = await message.channel.send(`Извините, <@${message.author.id}>, я не могу ответить тут. Попробуйте в <#506791803207548948>`);
-                rep.delete(3000);
-                return;
-            }
-        } else if (!(
-            message.channel.name == "бот" ||
-            message.member.hasPermission("KICK_MEMBERS") ||
-            cmd == "опрос" ||
-            cmd == "пишет"
-        ))
-        {
-            let rep = await message.channel.send(`Извините, <@${message.author.id}>, я не могу ответить тут. Попробуйте в <#504618938517159946>`);
-            rep.delete(3000);
-            return;
-        }
-
-        commandfile.run(bot, message, args);
-    }
+    command_handler.Handle(bot, message);
 }

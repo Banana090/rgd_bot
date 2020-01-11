@@ -1,6 +1,9 @@
 const Discord = require("discord.js");
+const utils = require("../extra_modules/utils.js");
 
-module.exports.run = async (bot, message, args) =>
+module.exports.only_bot_channel = true;
+
+module.exports.run = async (bot, message, cmd, args) =>
 {
     let i = 0;
     message.guild.members.forEach(element =>
@@ -14,9 +17,9 @@ module.exports.run = async (bot, message, args) =>
         .setDescription(`Всего: ${message.guild.memberCount}\nОнлайн: ${i}`)
         .setColor("#FFFFFF");
 
-    message.channel.send(embed);
+    utils.SendMessage(bot, message.channel, embed);
 }
 
 module.exports.help = {
-    name: ["онлайн", "онлаин"]
+    name: ["онлайн", "онлаин", "online"]
 }

@@ -1,8 +1,10 @@
 const Discord = require("discord.js");
+const utils = require("../extra_modules/utils.js");
 
-module.exports.run = async (bot, message, args) =>
+module.exports.only_bot_channel = false;
+
+module.exports.run = async (bot, message, cmd, args) =>
 {
-    message.delete();
     args = args.join(" ");
     let sepInd = args.indexOf(":");
 
@@ -13,7 +15,7 @@ module.exports.run = async (bot, message, args) =>
             .setDescription("Создайте опрос по такой форме:\n```!опрос название : варианты; ответа ; через;точку с запятой```И бот автоматически создаст опрос, добавив к нему реакции для голосования ;)\n\nP.S. Расставлять пробелы не обязательно")
             .setColor("#FFFFFF");
 
-        return message.channel.send(embed);
+        return utils.SendMessage(bot, message.channel, embed);
     }
 
     let name = args.slice(0, sepInd).trim();
@@ -36,7 +38,7 @@ module.exports.run = async (bot, message, args) =>
         .setDescription(descfinale)
         .setColor("#FFFFFF");
 
-    let opros = await message.channel.send(embed);
+    let opros = await utils.SendMessage(bot, message.channel, embed);
 
     if (asnwerCount > 9) { asnwerCount = 9; }
     for (let i = 0; i < asnwerCount; i++)

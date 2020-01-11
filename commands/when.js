@@ -1,23 +1,25 @@
 const Discord = require("discord.js");
+const utils = require("../extra_modules/utils.js");
 
-module.exports.run = async (bot, message, args) =>
+module.exports.only_bot_channel = false;
+
+module.exports.run = async (bot, message, cmd, args) =>
 {
-    message.delete();
-    let target = (message.guild.member(message.mentions.users.first()));
+    let target = bot.rgdGuild.member(
+        message.mentions.users.first() ||
+        bot.rgdGuild.members.get(args[0]) ||
+        bot.rgdGuild.members.get(args[1])
+    );
 
-    if (args[0] == "создан" && target)
+    if (target)
     {
-        message.channel.send(`<@${target.id}> создал аккаунт ${target.user.createdAt.toUTCString()}`);
-    } else
-    {
-        if (target)
-        {
-            message.channel.send(`<@${target.id}> зашел на сервер ${target.joinedAt.toUTCString()}\nМожет голосовать: ${target.joinedAt < (Date.now() - new Date(3600 * 24 * 1000 * 3))}`);
-        } else
-        {
-            message.channel.send(`Сервер был создан ${message.guild.createdAt.toUTCString()}`);
-        }
+        if (args[0] == "создан")
+            return utils.SendMessage(bot, message.channel, `**${target.displayName}** создал аккаунт ${target.user.createdAt.toUTCString()}`);
+
+        return utils.SendMessage(bot, message.channel, `**${target.displayName}** зашел на сервер ${target.joinedAt.toUTCString()}`);
     }
+
+    return utils.SendMessage(bot, message.channel, `Сервер был создан ${message.guild.createdAt.toUTCString()}`);
 }
 
 module.exports.help = {
