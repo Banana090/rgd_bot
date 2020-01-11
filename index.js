@@ -2,7 +2,9 @@
 const fs = require("fs");
 const auth = require("./json/auth.json");
 const config = require("./json/config.json");
+const bot_info = require("./json/bot_info.json");
 const command_handler = require("./extra_modules/command_handler.js");
+const utils = require("./extra_modules/utils.js");
 
 const bot = new Discord.Client();
 
@@ -58,12 +60,12 @@ bot.login(auth.token);
 
 async function OnEnabled()
 {
-    bot.user.setActivity(config.activity.text, { type: config.activity.type });
+    bot.user.setActivity(bot_info.activity.text, { type: bot_info.activity.type });
 }
 
 async function OnUserLeft(actionUser)
 {
-    bot.cachedChannels.bot.send(`**${actionUser.user.username}** вышел с сервера`);
+    utils.SendMessage(bot, bot.cachedChannels.bot, `**${actionUser.user.username}** вышел с сервера`);
 }
 
 async function OnMessage(message)

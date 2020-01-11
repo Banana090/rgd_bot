@@ -42,9 +42,7 @@ module.exports.run = async (bot, message, cmd, args) =>
 
     if (asnwerCount > 9) { asnwerCount = 9; }
     for (let i = 0; i < asnwerCount; i++)
-    {
         await opros.react(`${i + 1}\u20e3`);
-    }
 }
 
 module.exports.help = {

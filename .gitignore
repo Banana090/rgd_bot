@@ -6,5 +6,6 @@ auth.json
 config.json
 coins.json
 bot_info.json
+
 /Start.bat
 /package-lock.json
