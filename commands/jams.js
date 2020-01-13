@@ -7,7 +7,6 @@ module.exports.only_bot_channel = true;
 module.exports.run = async (bot, message, cmd, args) =>
 {
     let builder = new Discord.RichEmbed();
-    let icon = "https://cdn3.iconfinder.com/data/icons/unigrid-flat-food/90/006_092_jam_confiture_strawbery_marmalade_kitchen_sweet_food_provisions_preserves-512.png";
 
     if (!args[0])
     {
@@ -16,7 +15,7 @@ module.exports.run = async (bot, message, cmd, args) =>
         jams.info.forEach(e => { jams_list += `${i++}. ${e.name}\n`; });
 
         builder
-            .setAuthor("Архив джемов Russian Gamedev", icon)
+            .setTitle("Архив джемов Russian Gamedev")
             .setDescription("Вы можете узнать результаты прошедших джемов нашего сервера, а также поиграть в игры с этих джемов!\n\nДля того, чтобы посмотреть информацию по джему воспользуйтесь командой `!джем ID`\nГде ID = Номер джема в списке")
             .addField("Список Джемов", jams_list)
             .setColor("#FFFFFF");
@@ -38,18 +37,38 @@ module.exports.run = async (bot, message, cmd, args) =>
     jams.info[index].projects.forEach(e =>
     {
         if (e.win)
-            project_field += `**${i++}. ${e.name}**\n`;
+        {
+            if (e.link)
+                project_field += `**${i++}.** [**${e.name}**](${e.link})\n`;
+            else
+                project_field += `**${i++}. ${e.name}**\n`;
+        }
         else
-            project_field += `${i++}. ${e.name}\n`;
+        {
+            if (e.link)
+                project_field += `${i++}. [${e.name}](${e.link})\n`;
+            else
+                project_field += `${i++}. ${e.name}\n`;
+        }
 
         author_field += `${e.author}\n`;
     });
 
-    builder.setAuthor(jams.info[index].name, icon)
+    let links = "";
+    if (jams.info[index].link)
+        links += `Ссылка на игры: ${jams.info[index].link}\n`;
+
+    if (jams.info[index].streamlink)
+        links += `Ссылка на стрим: ${jams.info[index].streamlink}`;
+
+    project_field = project_field.substr(0, 1023);
+    author_field = author_field.substr(0, 1023);
+
+    builder.setTitle(jams.info[index].name)
         .setDescription(`**Тема**: ${jams.info[index].theme}\n**Призы**: ${jams.info[index].prize}\n**Дата проведения**: ${jams.info[index].time}`)
         .addField("Проект и место", project_field, true)
         .addField("Автор(ы)", author_field, true)
-        .addField("Ссылки", `Ссылка на игры: ${jams.info[index].link}`)
+        .addField("Ссылки", links)
         .setColor("#FFFFFF");
 
     utils.SendMessage(bot, message.channel, builder);

@@ -5,8 +5,8 @@ module.exports.only_bot_channel = false;
 
 module.exports.run = async (bot, message, cmd, args) =>
 {
-    let target = bot.rgdGuild.member(
-        message.mentions.users.first() ||
+    let target = (
+        bot.rgdGuild.member(message.mentions.users.first()) ||
         bot.rgdGuild.members.get(args[0]) ||
         bot.rgdGuild.members.get(args[1])
     );

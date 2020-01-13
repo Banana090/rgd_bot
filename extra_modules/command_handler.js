@@ -7,7 +7,7 @@ module.exports.Handle = async (bot, message) =>
 
     let messageContent = message.content.replace(/  +/g, ' ');
     let messageArray = messageContent.split(" ");
-    let cmd = messageArray[0].slice(1);
+    let cmd = messageArray[0].slice(1).trim().toLowerCase();
     let args = messageArray.slice(1);
 
     let commandfile = bot.commands.get(cmd);

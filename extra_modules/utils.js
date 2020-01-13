@@ -45,6 +45,11 @@ module.exports.SaveCoins = () =>
     })
 }
 
+module.exports.HandleException = async (bot, ex) =>
+{
+    this.SendMessage(bot, bot.cachedChannels.tsar, `${ex.name}\n${ex.message}`);
+}
+
 module.exports.SendMessage = async (bot, channel, text) => 
 {
     return channel.send(text)
