@@ -6,6 +6,9 @@ module.exports.only_bot_channel = false;
 
 module.exports.run = async (bot, message, cmd, args) =>
 {
+    if (cmd == "баланс")
+        return ShowBalance(bot, message, cmd, args);
+
     if (args[0] == "топ")
         return ShowTop(bot, message, cmd, args);
 
@@ -38,7 +41,7 @@ async function AdminAddCoins(bot, message, cmd, args)
         message.delete();
         let target = (message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[1]));
         let amount = Math.abs(parseInt(args[2]));
-        
+
         if (!target || !amount)
             return;
 
@@ -120,5 +123,5 @@ async function GiveCoins(bot, message, cmd, args)
 }
 
 module.exports.help = {
-    name: ["монеты", "лайки", "лайк", "монета"]
+    name: ["монеты", "лайки", "лайк", "монета", "баланс"]
 }
