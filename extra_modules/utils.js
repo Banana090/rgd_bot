@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const coins = require("../json/coins.json");
 const fs = require("fs");
+const savedRoles = require("../json/saved_roles.json");
 
 module.exports.IsAdmin = (guildMember) =>
 {
@@ -10,6 +11,23 @@ module.exports.IsAdmin = (guildMember) =>
 module.exports.IsJeka = (bot, guildMember) =>
 {
     return guildMember.id == bot.rgdGuild.ownerID;
+}
+
+module.exports.SaveRoles = (guildMember) =>
+{
+    let roles = [];
+    guildMember.roles.forEach(role => 
+    {
+        if (!(/everyone/gi.test(role.name)) && !role.hasPermission("KICK_MEMBERS"))
+            roles.push(role.id);
+    });
+    savedRoles[guildMember.id] = roles;
+
+    fs.writeFile("./json/saved_roles.json", JSON.stringify(savedRoles), (err) =>
+    {
+        if (err)
+            console.log(err);
+    })
 }
 
 module.exports.CheckForCoinsRegistered = (user) =>

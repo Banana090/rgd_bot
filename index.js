@@ -5,6 +5,7 @@ const config = require("./json/config.json");
 const bot_info = require("./json/bot_info.json");
 const command_handler = require("./extra_modules/command_handler.js");
 const reaction_handler = require("./extra_modules/reaction_handler.js");
+const join_handler = require("./extra_modules/join_handler.js");
 const utils = require("./extra_modules/utils.js");
 
 const bot = new Discord.Client();
@@ -60,6 +61,11 @@ bot.on("guildMemberRemove", async leftuser =>
     OnUserLeft(leftuser);
 });
 
+bot.on("guildMemberAdd", async guildMember =>
+{
+    OnUserJoined(guildMember);
+});
+
 bot.on("message", async message =>
 {
     OnMessage(message);
@@ -86,6 +92,13 @@ async function OnEnabled()
 async function OnUserLeft(actionUser)
 {
     utils.SendMessage(bot, bot.cachedChannels.bot, `**${actionUser.user.username}** вышел с сервера`);
+    if (actionUser.guild == bot.rgdGuild)
+        utils.SaveRoles(actionUser);
+}
+
+async function OnUserJoined(guildMember)
+{
+    join_handler.Handle(bot, guildMember);
 }
 
 async function OnMessage(message)
