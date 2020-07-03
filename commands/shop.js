@@ -103,5 +103,5 @@ async function ItemInfo(bot, message, cmd, args)
 }
 
 module.exports.help = {
-    name: ["магазин", "тест"]
+    name: ["магазин"]
 }

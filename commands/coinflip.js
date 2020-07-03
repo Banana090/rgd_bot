@@ -5,6 +5,8 @@ module.exports.only_bot_channel = true;
 
 module.exports.run = async (bot, message, cmd, args) =>
 {
+    if (bot.playingUsers.includes(message.author.id)) return;
+
     let amount = Math.abs(parseInt(args[0]));
     if (!amount) amount = 0;
 
@@ -16,6 +18,8 @@ module.exports.run = async (bot, message, cmd, args) =>
 
 async function CoinflipGame(bot, message, player, bet)
 {
+    bot.playingUsers.push(message.author.id);
+    
     let win = Math.random() <= 0.49;
     let currentBalance = utils.GetCoins(player);
     let newBalance = currentBalance;
@@ -52,6 +56,7 @@ async function CoinflipGame(bot, message, player, bet)
     setTimeout(() =>
     {
         mess.edit(embed);
+        bot.playingUsers.splice(bot.playingUsers.indexOf(message.author.id), 1);
     }, 3000);
 }
 
