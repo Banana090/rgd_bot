@@ -3,12 +3,14 @@ const fs = require("fs");
 const auth = require("./json/auth.json");
 const config = require("./json/config.json");
 const bot_info = require("./json/bot_info.json");
+const left_phrases = require("./json/left_phrases.json");
 const command_handler = require("./extra_modules/command_handler.js");
 const reaction_handler = require("./extra_modules/reaction_handler.js");
 const join_handler = require("./extra_modules/join_handler.js");
 const utils = require("./extra_modules/utils.js");
+const nick_change_phrases = require("./json/nick_change_phrases.json");
 
-const bot = new Discord.Client();
+const bot = new Discord.Client({disableEveryone: true});
 
 //#region Load Commands
 bot.commands = new Discord.Collection();
@@ -53,6 +55,8 @@ bot.on("ready", async () =>
     bot.cachedRoles = {};
     bot.cachedRoles.mute = bot.rgdGuild.roles.get(config.roles.mute);
     bot.cachedRoles.active = bot.rgdGuild.roles.get(config.roles.active);
+
+    bot.playingUsers = [];
     OnEnabled();
 });
 
@@ -81,8 +85,40 @@ bot.on("messageReactionRemove", async (message_reaction, user) =>
     OnReactionRemove(message_reaction, user);
 });
 
+bot.on("guildMemberUpdate", async (oldUser, newUser) =>
+{
+    //OnGuildUserChanged(oldUser, newUser);
+});
+
+bot.on("userUpdate", async (oldUser, newUser) =>
+{
+    //OnUserChanged(oldUser, newUser);
+});
+
 bot.login(auth.token);
 //#endregion
+
+async function OnGuildUserChanged(oldUser, newUser)
+{
+    if (oldUser.displayName != newUser.displayName)
+    {
+        let p = nick_change_phrases.phrases[Math.floor(Math.random() * nick_change_phrases.phrases.length)]
+        p = p.replace(/%/g, `**${oldUser.displayName}**`);
+        p = p.replace(/@/g, `**${newUser.displayName}**`);
+        utils.SendMessage(bot, bot.cachedChannels.obsh, p);
+    }
+}
+
+async function OnUserChanged(oldUser, newUser)
+{
+    if (oldUser.username != newUser.username)
+    {
+        let p = nick_change_phrases.phrases[Math.floor(Math.random() * nick_change_phrases.phrases.length)]
+        p = p.replace(/%/g, `**${oldUser.username}**`);
+        p = p.replace(/@/g, `**${newUser.username}**`);
+        utils.SendMessage(bot, bot.cachedChannels.obsh, p);
+    }
+}
 
 async function OnEnabled()
 {
@@ -91,9 +127,13 @@ async function OnEnabled()
 
 async function OnUserLeft(actionUser)
 {
-    utils.SendMessage(bot, bot.cachedChannels.bot, `**${actionUser.user.username}** вышел с сервера`);
     if (actionUser.guild == bot.rgdGuild)
+    {
+        let p = left_phrases.phrases[Math.floor(Math.random() * left_phrases.phrases.length)]
+        p = p.replace(/%/g, `**${actionUser.user.username}**`);
+        utils.SendMessage(bot, bot.cachedChannels.obsh, p);
         utils.SaveRoles(actionUser);
+    }
 }
 
 async function OnUserJoined(guildMember)

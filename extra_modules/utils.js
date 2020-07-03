@@ -36,9 +36,44 @@ module.exports.CheckForCoinsRegistered = (user) =>
     {
         coins[user.id] = {
             coins: 0,
-            date: Date.now()
+            lootboxDate: new Date(Date.now()),
+            rouletteDate: new Date(Date.now())
         };
     }
+}
+
+module.exports.GetLootboxDate = (user) =>
+{
+    this.CheckForCoinsRegistered(user);
+    if (!coins[user.id].lootboxDate)
+    {
+        coins[user.id].lootboxDate = new Date(Date.now());
+        this.SaveCoins();
+    }
+    return new Date(coins[user.id].lootboxDate).valueOf();
+}
+
+module.exports.GetRouletteDate = (user) =>
+{
+    this.CheckForCoinsRegistered(user);
+    if (!coins[user.id].rouletteDate)
+    {
+        coins[user.id].rouletteDate = new Date(Date.now());
+        this.SaveCoins();
+    }
+    return new Date(coins[user.id].rouletteDate).valueOf();
+}
+
+module.exports.SetRouletteDate = (user, date) =>
+{
+    this.CheckForCoinsRegistered(user);
+    coins[user.id].rouletteDate = date;
+}
+
+module.exports.SetLootboxDate = (user, date) =>
+{
+    this.CheckForCoinsRegistered(user);
+    coins[user.id].lootboxDate = date;
 }
 
 module.exports.GetCoins = (user) =>
